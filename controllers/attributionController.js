@@ -3,6 +3,7 @@ const SubRecipe = require('../models/subRecipe');
 const Recipe = require("../models/Recipe")
 const {Op} = require('sequelize')
 const {getAllNotPayedContribuable } = require('../services/getAllNotPayedContribuable')
+const Localization = require('../models/Localization')
 
 exports.createAttribution = async (req, res) => {
   try {
@@ -112,12 +113,11 @@ exports.notPayed = async(req,res)=>{
 		 it 's return a data =>  attribution  Id that not apear in 
 		 
 		 * **/
-		const {date} = req.query;
-		const allId  = await getAllNotPayedContribuable (date)
+		const allId  = await getAllNotPayedContribuable (new Date().toISOString())
 		const data = await Attribution.findAll({
 			where:{
 				attribution_id:{
-					[Op.notIn]:[1,2]
+					[Op.notIn]:allId['idData']
 				}	
 			},
 			include:[{
@@ -130,6 +130,41 @@ exports.notPayed = async(req,res)=>{
 	} catch (e) {
 		res.status(500).json({msg:e?e:'Server error'})
 		/* handle error */
+	}
+}
+
+/*
+ *get all attribut not paid but by there localisation
+ *
+ * */
+
+exports.notPayedByLocalisation = async (req,res) =>{
+	try {
+		const {id} = req.query
+		const parseId = Number(id)
+		const allId  = await getAllNotPayedContribuable (new Date().toISOString())
+		const data = await Attribution.findAll({
+			where:{
+				attribution_id:{
+					[Op.notIn]:allId['idData']
+				}	
+			},
+			include:[{
+				model:SubRecipe
+			},
+				{
+					model:Localization
+				}
+			]
+		})
+		const cleanData = data.map(item=>item.toJSON())
+		const localisationId = cleanData.filter(item=>item['localization_id']==parseId)
+		const msg = data? `here the data in localtion end point : ${data.length}`:'Empty'
+		res.status(200).json({msg,data:localisationId})
+
+	} catch (e) {
+		/* handle error */
+		res.status(500).json({msg:e?e:'Server error'})
 	}
 }
 

@@ -18,13 +18,9 @@ app.use('/servicerecette', mainRoutes)
 
 const q = async() => {
     if(sequelize) {
-         Recipe.sync()
-         SubRecipe.sync()
-         Attribution.sync()
-         PayementHistory.sync()
-         Localization.sync()
-         PerceptorLocation.sync()
-         Ticket.sync()
+         Attribution.sync({force:true})
+        // PerceptorLocation.sync
+        // Ticket.sync()*/
     }
 }
 //;q()

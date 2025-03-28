@@ -11,5 +11,6 @@ router.delete('/:id', attributionController.deleteAttribution);
 router.get('/subrecipe/:subrecipeId', attributionController.getAttributionsBySubrecipeId);
 router.get('/contribuable/:contribuableId', attributionController.getAttributionsByContribuableId);
 router.get('/contrib/attribuable/notPayed', attributionController.notPayed ) 
+router.get('/contrib/attribuable/notPayed/location/id',attributionController.notPayedByLocalisation)
 
 module.exports = router;

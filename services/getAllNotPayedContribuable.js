@@ -6,7 +6,7 @@
 //   By: Mickael Joseph <mickaelandriana06@gmail.com> |  __|  | . ` |  | |    //
 //                                                    | |____ | |\  | _| |_   //
 //   Created: 2025/03/27 11:09:50 by Mickael Joseph  |______||_| \_||_____|   //
-//   Updated: 2025/03/27 16:56:47 by Mickael Joseph                           //
+//   Updated: 2025/03/28 15:44:39 by Mickael Joseph                           //
 //                                                                            //
 // ************************************************************************** //
 
@@ -15,7 +15,6 @@ const PayementHistory =  require ('../models/PayementHistory')
 
 exports.getAllNotPayedContribuable = async (date)  =>{
 	try {
-		console.log(date)
 		const data = await PayementHistory.findAll({
 			where:
 			{
